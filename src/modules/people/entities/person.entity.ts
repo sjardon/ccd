@@ -65,7 +65,7 @@ export class Person {
   religiousStudies: string;
 
   @Prop()
-  otherRelgiousGroups: string;
+  otherReligiousGroups: string;
 
   @Prop()
   otherSocialAction: string;
