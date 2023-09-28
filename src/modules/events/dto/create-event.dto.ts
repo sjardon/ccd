@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 import { EventTypesEnum } from '../constants/event-types.enum';
 import { Transform, Type } from 'class-transformer';
+import { IsObjectIdString } from 'src/common/decorators/validation-decorators/is-object-id-string.decorator';
 
 export class CreatePeriodDto {
   @IsNotEmpty()
@@ -47,6 +48,6 @@ export class CreateEventDto {
   place: string;
 
   @IsArray()
-  @IsString({ each: true })
+  @IsObjectIdString({ each: true })
   centralizers: string[];
 }

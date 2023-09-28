@@ -40,9 +40,12 @@ export class EventsService {
 
       for (let centralizerId of centralizers) {
         const centralizer = await this.peopleService.findOne(centralizerId);
-        throw new BadRequestException(
-          `centralizerId [${centralizerId}] not found`,
-        );
+
+        if (!centralizer) {
+          throw new BadRequestException(
+            `centralizerId [${centralizerId}] not found`,
+          );
+        }
       }
 
       return true;

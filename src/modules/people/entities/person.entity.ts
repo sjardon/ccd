@@ -26,10 +26,10 @@ export class Person {
   nickname: string;
 
   @Prop()
-  identityCardType: string;
+  idCardType: string;
 
   @Prop()
-  identityCard: string;
+  idCard: string;
 
   @Prop()
   sex: 'male' | 'female';
