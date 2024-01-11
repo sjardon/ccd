@@ -52,9 +52,6 @@ export class DatabaseOptionsService {
       autoCreate: true,
       // useMongoClient: true,
     };
-
-    console.log(mongooseOptions);
-    // return 'mongodb://username:password@host:port/database';
     return mongooseOptions;
   }
 }

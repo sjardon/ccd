@@ -2,20 +2,18 @@ import { Types } from 'mongoose';
 import {
   registerDecorator,
   ValidationOptions,
-  ValidationArguments,
   buildMessage,
 } from 'class-validator';
 
 export function IsObjectIdString(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'isObjectIdString',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
-          console.log(value);
+        validate(value: any) {
           return Types.ObjectId.isValid(value);
         },
         defaultMessage: buildMessage(

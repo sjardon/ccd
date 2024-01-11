@@ -33,8 +33,6 @@ export class PeopleService {
         $or: [{ email }, { idCard }],
       });
 
-      console.log(existsPerson);
-
       if (existsPerson) {
         throw new BadRequestException(`Person already exists`);
       }

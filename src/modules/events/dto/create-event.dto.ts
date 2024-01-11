@@ -1,5 +1,4 @@
 import {
-  ArrayMinSize,
   IsArray,
   IsDate,
   IsEnum,
@@ -7,7 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { EventTypesEnum } from '../constants/event-types.enum';
+import { EventCategoryEnum } from '../constants/event-category.enum';
 import { Transform, Type } from 'class-transformer';
 import { IsObjectIdString } from 'src/common/decorators/validation-decorators/is-object-id-string.decorator';
 
@@ -32,8 +31,8 @@ export class CreateEventDto {
   description: string;
 
   @IsNotEmpty()
-  @IsEnum(EventTypesEnum)
-  type: EventTypesEnum;
+  @IsEnum(EventCategoryEnum)
+  category: EventCategoryEnum;
 
   @IsNotEmpty()
   @ValidateNested()

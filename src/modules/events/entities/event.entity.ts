@@ -12,7 +12,7 @@ export class Event {
   description: string;
 
   @Prop()
-  type: string;
+  category: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }] })
   centralizers: Person[];
