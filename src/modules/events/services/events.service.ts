@@ -1,6 +1,7 @@
 import { PeopleService } from './../../people/people.service';
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -39,32 +40,33 @@ export class EventsService {
 
       return createdEvent;
     } catch (error) {
-      throw error;
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      const { message } = error as Error;
+      this.logger.error(`Internal server error: ${message}`);
+      throw new InternalServerErrorException();
     }
   }
 
   async validate(event: CreateEventDto) {
     // TODO: add logs
+    const { period, centralizers } = event;
 
-    try {
-      const { period, centralizers } = event;
+    this.periodsService.validate(period);
 
-      this.periodsService.validate(period);
+    for (const centralizerId of centralizers) {
+      const centralizer = await this.peopleService.findOne(centralizerId);
 
-      for (const centralizerId of centralizers) {
-        const centralizer = await this.peopleService.findOne(centralizerId);
-
-        if (!centralizer) {
-          throw new BadRequestException(
-            `centralizerId [${centralizerId}] not found`,
-          );
-        }
+      if (!centralizer) {
+        throw new BadRequestException(
+          `centralizerId [${centralizerId}] not found`,
+        );
       }
-
-      return true;
-    } catch (error) {
-      throw error;
     }
+
+    return true;
   }
 
   async findAll(findAllEventsDto: FindAllEventsDto): Promise<Event[]> {
