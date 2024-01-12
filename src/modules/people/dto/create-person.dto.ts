@@ -3,6 +3,7 @@ import {
   IsDate,
   IsEmail,
   IsEnum,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -38,28 +39,34 @@ export class CreatePersonDto {
   surname: string;
 
   @IsString()
+  @IsOptional()
   nickname: string;
 
   @IsString()
-  identityCardType: string;
+  idCardType: string;
 
   @IsString()
   @Type(() => String)
-  identityCard: string;
+  idCard: string;
 
   @IsEnum(SexTypesEnum)
+  @IsOptional()
   sex: SexTypesEnum;
 
   @IsDate()
   @Type(() => Date)
+  @IsOptional()
   birthDate: Date;
 
   @IsEnum(MaritalStatusesTypesEnum)
-  maritalStatus: string;
+  @IsOptional()
+  maritalStatus: MaritalStatusesTypesEnum;
 
   @IsString()
+  @IsOptional()
   nationality: string;
 
+  @IsOptional()
   @ValidateNested()
   @Type(() => CreateStreetAddressDto)
   address: CreateStreetAddressDto;
@@ -68,24 +75,31 @@ export class CreatePersonDto {
   @Type(() => String)
   phoneNumber: string;
 
+  @IsOptional()
   @IsString()
   studiesAchieved: string;
 
+  @IsOptional()
   @IsString()
   work: string;
 
+  @IsOptional()
   @IsString()
   ecclesiasticalStatus: string;
 
+  @IsOptional()
   @IsString()
   diocese: string;
 
+  @IsOptional()
   @IsString()
   religiousStudies: string;
 
+  @IsOptional()
   @IsString()
   otherRelgiousGroups: string;
 
+  @IsOptional()
   @IsString()
   otherSocialAction: string;
 }

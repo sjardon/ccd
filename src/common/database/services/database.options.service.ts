@@ -28,11 +28,17 @@ export class DatabaseOptionsService {
   }
 
   createOptions(): MongooseModuleOptions {
-    let uri = `${this.host}`;
+    let auth = '';
+    let database = '';
 
-    if (this.database) {
-      uri = `${uri}/${this.database}${this.options}`;
+    if (this.user && this.password) {
+      auth = `${this.user}:${this.password}@`;
     }
+    if (this.database) {
+      database = `/${this.database}`;
+    }
+
+    let uri = `mongodb://${auth}${this.host}${database}`;
 
     if (this.env !== ENUM_APP_ENVIRONMENT.PRODUCTION) {
       mongoose.set('debug', this.debug);
@@ -40,20 +46,12 @@ export class DatabaseOptionsService {
 
     const mongooseOptions: MongooseModuleOptions = {
       uri,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
       serverSelectionTimeoutMS: 5000,
       autoCreate: true,
       // useMongoClient: true,
     };
-
-    if (this.user && this.password) {
-      mongooseOptions.auth = {
-        username: this.user,
-        password: this.password,
-      };
-    }
-
     return mongooseOptions;
   }
 }
