@@ -111,11 +111,55 @@ export class EventsService {
     }
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+  async update(id: string, updateEventDto: UpdateEventDto) {
+    try {
+      const updatedEvent = await this.eventModel
+        .findOneAndUpdate({ _id: id }, updateEventDto, { new: true })
+        .exec();
+
+      if (!updatedEvent) {
+        this.logger.error(
+          `Trying to update non-existent event with id [${id}]`,
+        );
+
+        throw new BadRequestException(`Event with id [${id}] not found`);
+      }
+
+      return updatedEvent;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      const { message } = error as Error;
+
+      this.logger.error(`Internal server error: ${message}`);
+      throw new InternalServerErrorException();
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+  async remove(id: string) {
+    try {
+      const deletedEvent = await this.eventModel.findByIdAndDelete(id).exec();
+
+      if (!deletedEvent) {
+        this.logger.error(
+          `Trying to delete non-existent event with id [${id}]`,
+        );
+
+        throw new BadRequestException(`Event with id [${id}] not found`);
+      }
+
+      return true;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      const { message } = error as Error;
+
+      this.logger.error(`Internal server error: ${message}`);
+      throw new InternalServerErrorException();
+    }
   }
 }
